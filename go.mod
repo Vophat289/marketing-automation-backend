@@ -4,6 +4,7 @@ go 1.23
 
 require (
 	github.com/gin-gonic/gin v1.7.7
+	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/joho/godotenv v1.5.1
 	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e
 	gorm.io/driver/postgres v1.3.9

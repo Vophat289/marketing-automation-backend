@@ -71,6 +71,9 @@ Server sẽ chạy ở địa chỉ: `http://localhost:8080`
 - **Đăng ký tài khoản mới**
   - **Endpoint:** `POST /api/users/register`
   - **Mô tả:** Nhận thông tin `name`, `email`, `password`. Kiểm tra email trùng lặp, mã hóa mật khẩu bằng `bcrypt` và lưu vào database.
+- **Đăng nhập (Login)**
+  - **Endpoint:** `POST /api/users/login`
+  - **Mô tả:** Nhận thông tin `email`, `password`. Kiểm tra thông tin đăng nhập, nếu đúng sẽ trả về một **JWT Token** để sử dụng cho các API cần xác thực.
 - **Lấy danh sách người dùng**
   - **Endpoint:** `GET /api/users/listusers`
   - **Mô tả:** Lấy toàn bộ danh sách người dùng đã đăng ký từ database. Dữ liệu trả về đã được lọc bỏ trường `password` để đảm bảo bảo mật.

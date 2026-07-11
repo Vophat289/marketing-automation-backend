@@ -15,5 +15,8 @@ func SetupUserRoutes(router *gin.Engine) {
 		
 		//Lấy danh sách người dùng
 		userGroup.GET("/listusers", controllers.ListUsers)
+
+		//Post đăng nhập user
+		userGroup.POST("/login", controllers.LoginUser)
 	}
 }

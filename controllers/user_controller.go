@@ -3,6 +3,7 @@ package controllers
 import (
 	"marketing-automation-backend/config"
 	"marketing-automation-backend/models"
+	"marketing-automation-backend/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -84,6 +85,51 @@ func Register(c *gin.Context) {
 			"id":    newUser.ID,
 			"name":  newUser.Name,
 			"email": newUser.Email,
+		},
+	})
+}
+
+// LoginUser xử lý logic đăng nhập và trả về JWT Token
+func LoginUser(c *gin.Context) {
+	var input struct {
+		Email    string `json:"email" binding:"required,email"`
+		Password string `json:"password" binding:"required"`
+	}
+
+	// 1. Lấy dữ liệu từ request
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Dữ liệu không hợp lệ"})
+		return
+	}
+
+	// 2. Tìm user trong database bằng email
+	var user models.User
+	if err := config.DB.Where("email = ?", input.Email).First(&user).Error; err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Email hoặc mật khẩu không đúng"})
+		return
+	}
+
+	// 3. Kiểm tra mật khẩu
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password)); err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Email hoặc mật khẩu không đúng"})
+		return
+	}
+
+	// 4. Tạo JWT Token
+	token, err := utils.GenerateToken(user.ID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Không thể tạo token đăng nhập"})
+		return
+	}
+
+	// 5. Trả về token cho client
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Đăng nhập thành công",
+		"token":   token,
+		"user": gin.H{
+			"id":    user.ID,
+			"name":  user.Name,
+			"email": user.Email,
 		},
 	})
 }
