@@ -1,4 +1,14 @@
-/.env
-/node_modules
-/package-lock.json
-/package.json
+# === Backend (Go) ===
+backend/.env
+backend/tmp/
+backend/app
+backend/marketing-automation-backend
+
+# === Frontend (React) ===
+frontend/node_modules/
+frontend/dist/
+
+# === Root (thừa từ trước) ===
+node_modules/
+package.json
+package-lock.json

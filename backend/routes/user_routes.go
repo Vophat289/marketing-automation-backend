@@ -1,0 +1,34 @@
+package routes
+
+import (
+	"backend/controllers"
+	"backend/middleware"
+
+	"github.com/gin-gonic/gin"
+)
+
+// SetupUserRoutes định nghĩa các đường dẫn API liên quan đến User
+func SetupUserRoutes(router *gin.Engine) {
+	userGroup := router.Group("/api/users")
+	{
+		// Định nghĩa route POST /api/users/register
+		userGroup.POST("/register", controllers.Register)
+
+		//Lấy danh sách người dùng
+		userGroup.GET("/listusers", controllers.ListUsers)
+
+		// Post đăng nhập user
+		userGroup.POST("/login", controllers.LoginUser)
+	}
+
+	// Nhóm các route yêu cầu xác thực (phải có JWT Token)
+	protectedGroup := router.Group("/api/users")
+	protectedGroup.Use(middleware.RequireAuth())
+	{
+		// Đăng xuất
+		protectedGroup.POST("/logout", controllers.Logout)
+
+		// Đổi mật khẩu
+		protectedGroup.POST("/change-password", controllers.ChangePassword)
+	}
+}

@@ -74,6 +74,12 @@ Server sẽ chạy ở địa chỉ: `http://localhost:8080`
 - **Đăng nhập (Login)**
   - **Endpoint:** `POST /api/users/login`
   - **Mô tả:** Nhận thông tin `email`, `password`. Kiểm tra thông tin đăng nhập, nếu đúng sẽ trả về một **JWT Token** để sử dụng cho các API cần xác thực.
+- **Đăng xuất (Logout)**
+  - **Endpoint:** `POST /api/users/logout`
+  - **Mô tả:** Yêu cầu gửi kèm Token ở Header (`Authorization: Bearer <token>`). Đưa token hiện tại vào danh sách đen (Blacklist) để không thể sử dụng lại.
+- **Đổi mật khẩu (Change Password)**
+  - **Endpoint:** `POST /api/users/change-password`
+  - **Mô tả:** Yêu cầu gửi kèm Token ở Header. Nhận thông tin `old_password` và `new_password`. Nếu thành công, mật khẩu sẽ được đổi và **tất cả các phiên đăng nhập khác (ở máy khác) sẽ ngay lập tức bị vô hiệu hóa** (do `TokenVersion` thay đổi).
 - **Lấy danh sách người dùng**
   - **Endpoint:** `GET /api/users/listusers`
   - **Mô tả:** Lấy toàn bộ danh sách người dùng đã đăng ký từ database. Dữ liệu trả về đã được lọc bỏ trường `password` để đảm bảo bảo mật.
