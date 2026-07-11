@@ -1,11 +1,12 @@
 package main
 
 import (
-	"log"
 	"backend/config"
 	"backend/models"
 	"backend/routes"
+	"log"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -27,6 +28,9 @@ func main() {
 
 	// 3. Khởi tạo Gin router
 	router := gin.Default()
+
+	// Cấu hình CORS - cho phép Frontend (localhost:5173) gọi API
+	router.Use(cors.Default())
 
 	// 4. Thiết lập các routes
 	routes.SetupUserRoutes(router)
